@@ -14,11 +14,12 @@ services:
       - FLASK_ENDPOINT=http://api:5000
       - SPEECH_API=ws://40.90.170.182:8001/client/ws/speech
       - SPEECH_HTTP_API=http://40.90.170.182:8001/client/dynamic/recognize
+      - SPEECH_HTTP_AUTH=https://api.speechlab.sg/auth
       - DIALOGFLOW_KEYFILENAME_COVID19=/run/secrets/dialog_covid19
       - DIALOGFLOW_KEYFILENAME_BABYBONUS=/run/secrets/dialog_babybonus
       - RAJAT_ENDPOINT_BABYBONUS=http://13.76.152.232:1995
       - RAJAT_ENDPOINT_COVID19=http://13.76.152.232:2995
-      - AISG_TOKEN=/run/secrets/aisg_token
+      - AISG_CREDENTIALS=/run/secrets/aisg_credentials
     ports:
       - '3001:3001'
     deploy:
@@ -26,7 +27,7 @@ services:
     secrets:
       - dialog_babybonus
       - dialog_covid19
-      - aisg_token
+      - aisg_credentials
 
 #    volumes:
 #      - ../online_asr_backend/routes:/srv/app/server/routes
@@ -76,5 +77,5 @@ secrets:
     external: true
   dialog_covid19:
     external: true
-  aisg_token:
+  aisg_credentials:
     external: true
