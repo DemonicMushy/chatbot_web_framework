@@ -1,4 +1,4 @@
-version: '3'
+version: '3.1'
 
 services:
 
@@ -8,24 +8,27 @@ services:
   server:
     image: demonicmushy/chatbotplatform:server
     environment:
-        - MICL_ENDPOINT=${MICL_ENDPOINT}
-        - FLASK_ENDPOINT=${FLASK_ENDPOINT}
-        - AISG_TOKEN=${AISG_TOKEN}
-        - SPEECH_API=${SPEECH_API}
-        - SPEECH_HTTP_API=${SPEECH_HTTP_API}
-        - DIALOGFLOW_PROJECT_ID_COVID19=${DIALOGFLOW_PROJECT_ID_COVID19}
-        - DIALOGFLOW_PROJECT_ID_BABYBONUS=${DIALOGFLOW_PROJECT_ID_BABYBONUS}
-        - DIALOGFLOW_KEYFILENAME_COVID19=${DIALOGFLOW_KEYFILENAME_COVID19}
-        - DIALOGFLOW_KEYFILENAME_BABYBONUS=${DIALOGFLOW_KEYFILENAME_BABYBONUS}
-        - RAJAT_ENDPOINT_BABYBONUS=${RAJAT_ENDPOINT_BABYBONUS}
-        - RAJAT_ENDPOINT_COVID19=${RAJAT_ENDPOINT_COVID19}
-    #build:
-    #  context: ../backend
-    #  args:
-    #    - KEY=${KEY}
-    #    - PROJECTID=${PROJECTID}
+      - MICL_ENDPOINT=http://13.76.152.232:8081
+      - FLASK_ENDPOINT=http://api:5000
+      - SPEECH_API=ws://40.90.170.182:8001/client/ws/speech
+      - SPEECH_HTTP_API=http://40.90.170.182:8001/client/dynamic/recognize
+      - SPEECH_HTTP_AUTH=https://api.speechlab.sg/auth
+      - DIALOGFLOW_KEYFILENAME_COVID19=/run/secrets/dialog_covid19
+      - DIALOGFLOW_KEYFILENAME_BABYBONUS=/run/secrets/dialog_babybonus
+      - RAJAT_ENDPOINT_BABYBONUS=http://13.76.152.232:1995
+      - RAJAT_ENDPOINT_COVID19=http://13.76.152.232:2995
+      - RUSHI_ENDPOINT_BABYBONUS=http://13.76.152.232:1996
+      - RUSHI_ENDPOINT_COVID19=http://13.76.152.232:1997
+      - AISG_CREDENTIALS=/run/secrets/aisg_credentials
     ports:
-      - ${APP_SERVER_PORT_FOR_HTTPS}:${APP_SERVER_PORT}
+      # HTTPS server port : server listening port
+      - '3002:3001'
+    deploy:
+      replicas: 1
+    secrets:
+      - dialog_babybonus
+      - dialog_covid19
+      - aisg_credentials
 
   ##################
   # Flask Container
@@ -33,28 +36,25 @@ services:
   api:
     image: demonicmushy/chatbotplatform:api
     environment:
-      - ${FLASK_SERVER_PORT}:${CONTAINER_PORT}
-      - PORT=${CONTAINER_PORT}
-    #build: ../comparison
-    #ports:
-    #  - ${FLASK_SERVER_PORT}:${CONTAINER_PORT}
-    #environment:
-    #  PORT: ${CONTAINER_PORT}
+      - PORT=5000
+    deploy:
+      replicas: 1
 
   ##################
   # Client Container
   ##################
   client:
     image: demonicmushy/chatbotplatform:client
-    environment:
-        - REACT_APP_API=${API_ENDPOINT}
-    #build:
-    #  context: ../frontend
     ports:
-      - ${REACT_APP_PORT_FOR_HTTPS}:${NGINX_PORT}
+      # HTTPS client port : client listening port
+      - '3003:80'
+    deploy:
+      replicas: 1
 
-  ####################
-  # Rajat Model Covid19
-  #####################
-  rajat:
-    image: demonicmushy/chatbotplatform:rajatcovid19
+secrets:
+  dialog_babybonus:
+    external: true
+  dialog_covid19:
+    external: true
+  aisg_credentials:
+    external: true
