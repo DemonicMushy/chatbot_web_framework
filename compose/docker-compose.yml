@@ -31,10 +31,6 @@ services:
       - dialog_covid19
       - aisg_credentials
 
-#    volumes:
-#      - ../online_asr_backend/routes:/srv/app/server/routes
-#    command: npm run dev
-
   ##################
   # Flask Container
   ##################
@@ -45,14 +41,6 @@ services:
       - PORT=5000
     deploy:
       replicas: 1
-
-   # volumes:
-   #   - ../production:/api
-   # command: python flaskApp.py
-   # environment:
-   #   - FLASK_ENV=development
-   #   - FLASK_APP=flaskApp.py
-   #   - FLASK_DEBUG=1
 
   ##################
   # Client Container
@@ -68,11 +56,6 @@ services:
       - '3000:80'
     deploy:
       replicas: 1
-
-#    volumes:
-#      - ../dialogflowapp/src:/srv/app/client/src
-#      - ../dialogflowapp/public:/srv/app/client/public
-#    command: npm run start
 
 secrets:
   dialog_babybonus:

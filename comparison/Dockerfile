@@ -1,10 +1,8 @@
-FROM python:3.6-slim
+FROM python:3.7-slim
 
-# run mkdir -p /api # no need this, WORKDIR will check and create if not exist
 WORKDIR /api
 
-# COPY . /api # no need this as we already "cd" into the WORKDIR
-COPY . .
+COPY cosineSimilarity.py flaskApp.py requirements.txt .
 
 RUN apt-get clean && apt-get -y update
 
