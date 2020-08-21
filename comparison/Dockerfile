@@ -2,7 +2,7 @@ FROM python:3.7-slim
 
 WORKDIR /api
 
-COPY cosineSimilarity.py flaskApp.py requirements.txt .
+COPY cosineSimilarity.py flaskApp.py requirements.txt ./
 
 RUN apt-get clean && apt-get -y update
 
