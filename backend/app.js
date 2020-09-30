@@ -8,11 +8,12 @@ const rushiRouter = require('./routes/rushi.js')
 const STT = require('./controllers/MainController');
 const upload = require('./upload');
 const AC = require('./controllers/AudioController')
+const FAQ = require('./controllers/FAQDataController')
 
 const app = express();
 
 app.use(require('cors')({ origin: true, credentials: true }))
-app.use(express.json())
+app.use(express.json({limit: "50mb"}))
 app.use(express.urlencoded({ extended: false }))
 
 app.use('/dialog', dialogflowRouter);
@@ -26,11 +27,18 @@ app.get('/', (req, res, next)=>{res.json({'status':'success'})})
 
 app.post('/stream/google', STT.streamByRecordingGoogle)
 app.post('/stream/aisg', STT.streamByRecordingAISG)
-app.post('/stream/import', upload.single('file'), STT.streamByImport)
+app.post('/stream/import', upload.audio.single('file'), STT.streamByImport)
 
-app.post('/api/upload', upload.single('file'), AC.convertToWAV)
-app.post('/api/speechlabs', upload.none(), STT.speechLabsHTTPRequest)
-app.post('/api/google', upload.none(), STT.googleHTTPRequest)
+app.post('/api/upload', upload.audio.single('file'), AC.convertToWAV)
+app.post('/api/speechlabs', upload.audio.none(), STT.speechLabsHTTPRequest)
+app.post('/api/google', upload.audio.none(), STT.googleHTTPRequest)
 app.get('/api/deletestorage', AC.deleteFiles)
+
+app.get('/faqdata/:topic', FAQ.getFAQData)
+app.post('/faqdata', FAQ.writeFAQData)
+app.get('/faqtopics', FAQ.getFAQTopics)
+app.post('/faqdata/csv', upload.csv.single('file'), FAQ.processCSV)
+app.post('/faqtopics/create', FAQ.addNewTopic)
+app.post('/faqtopics/delete', FAQ.removeTopic)
 
 module.exports = app

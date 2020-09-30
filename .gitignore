@@ -2,6 +2,7 @@
 
 #Frontend & Backend directorys
 node_modules/
+data/
 
 #secrets
 keys/
