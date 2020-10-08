@@ -19,8 +19,7 @@ services:
       - DIALOGFLOW_KEYFILENAME_BABYBONUS=/run/secrets/dialog_babybonus
       - RAJAT_ENDPOINT_BABYBONUS=http://13.76.152.232:1995
       - RAJAT_ENDPOINT_COVID19=http://13.76.152.232:2995
-      - RUSHI_ENDPOINT_BABYBONUS=
-      - RUSHI_ENDPOINT_COVID19=
+      - RUSHI_ENDPOINT=http://13.76.152.232:1996
       - AISG_CREDENTIALS=/run/secrets/aisg_credentials
     ports:
       - '3001:3001'
