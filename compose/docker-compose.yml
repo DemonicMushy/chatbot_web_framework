@@ -31,17 +31,6 @@ services:
       - aisg_credentials
 
   ##################
-  # Flask Container
-  ##################
-  api:
-    image: demonicmushy/chatbotplatform:api
-    build: ../comparison
-    environment:
-      - PORT=5000
-    deploy:
-      replicas: 1
-
-  ##################
   # Client Container
   ##################
   client:

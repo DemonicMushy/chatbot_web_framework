@@ -7,7 +7,8 @@ WORKDIR /srv/app/client
 COPY package.json /srv/app/client
 COPY package-lock.json /srv/app/client
 
-RUN npm install
+RUN npm install --production --slient && \
+    npm cache clean --force
 
 COPY . /srv/app/client
 
