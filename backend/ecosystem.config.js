@@ -1,10 +1,9 @@
 module.exports = {
     apps: [{
         name: 'backend',
-        script: 'npm',
-        args: 'start',
+        script: './bin/www',
         exec_mode: 'fork',
-        instaces: 1,
+        instances: 1,
         autorestart: true,
         watch:false,
         max_memory_start: '1G',

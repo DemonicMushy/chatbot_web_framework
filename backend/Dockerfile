@@ -19,11 +19,6 @@ RUN pip3 install -r requirements.txt
 
 COPY . /srv/app/server
 
-ENV ENV="/etc/profile"
-# needed?
-ENV PATH="/srv/app/server/node_modules/ffmpeg-static/bin/linux/x64/:${PATH}"
-# not needed
-
 EXPOSE 3001
 
 CMD ["pm2-runtime","ecosystem.config.js"]
